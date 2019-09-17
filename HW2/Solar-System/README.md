@@ -2,7 +2,7 @@
 
 > HW2 模拟太阳系
 
-在线演示：[demo.jiahonzheng.cn/Tic-Tac-Toe](https://demo.jiahonzheng.cn/Tic-Tac-Toe/) 。
+在线演示：[demo.jiahonzheng.cn/Solar-System](https://demo.jiahonzheng.cn/Solar-System/) 。
 
 演示视频：[Unity 模拟太阳系](https://www.bilibili.com/video/av68043118/) 。
 
