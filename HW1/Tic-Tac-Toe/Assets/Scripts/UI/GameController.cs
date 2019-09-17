@@ -24,11 +24,13 @@ namespace TicTacToe.UI
             if (GUI.Button(new Rect(buttonBaseX - 100, buttonBaseY - 200, buttonWidth, buttonHeight), "Back to Home"))
             {
                 OnPressBackButton();
+                return;
             }
             // Render "Reset" button.
             if (GUI.Button(new Rect(buttonBaseX - 100, buttonBaseY, buttonWidth, buttonHeight), "Reset"))
             {
                 OnPressResetButton();
+                return;
             }
             // Check if there is a winner.
             var winner = mechanics.CheckWin();
@@ -43,7 +45,6 @@ namespace TicTacToe.UI
                 messageStyle.normal.textColor = Color.red;
                 // Show the results.
                 GUI.Label(new Rect(width + 50, height - 75, 100, 100), msg, messageStyle);
-                GUI.enabled = false;
             }
 
             // Render the map.
@@ -76,8 +77,6 @@ namespace TicTacToe.UI
                     }
                 }
             }
-
-            GUI.enabled = true;
         }
 
         public abstract void AfterRenderButton(int i, int j, Mechanics.Player player, bool isPressed);
@@ -92,7 +91,6 @@ namespace TicTacToe.UI
         void OnPressResetButton()
         {
             mechanics.Reset();
-            GUI.enabled = true;
         }
     }
 }

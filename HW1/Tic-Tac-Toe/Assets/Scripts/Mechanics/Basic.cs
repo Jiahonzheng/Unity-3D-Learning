@@ -11,7 +11,7 @@ namespace TicTacToe.Mechanics
         protected bool playing = true;
         // When it is true, it means Player1 go first.
         protected bool turn = true;
-        // It stores the players' move.∏
+        // It stores the players' move.
         protected readonly Player[,] history = new Player[3, 3];
 
         public bool GetPlaying()
@@ -94,11 +94,7 @@ namespace TicTacToe.Mechanics
                 playing = false;
                 return Player.Tie;
             }
-            else
-            {
-                return Player.Unfinished;
-            }
-
+            return Player.Unfinished;
         }
 
         public virtual void AIMove() { }
