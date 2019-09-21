@@ -477,13 +477,64 @@ public enum Location { Left, Right };
 ```csharp
 public class GameController : MonoBehaviour, ISceneController, IUserAction
 {
-        public CoastController leftCoast;
-        public CoastController rightCoast;
-        public BoatController boat;
-        // 使用 集合数据类型 管理游戏对象。
-        public  List<CharacterController> characters = new List<CharacterController>(6);
-        private GameGUI gui;
-        // ......
+    public CoastController leftCoast;
+    public CoastController rightCoast;
+    public BoatController boat;
+    // 使用 集合数据类型 管理游戏对象。
+    public  List<CharacterController> characters = new List<CharacterController>(6);
+    private GameGUI gui;
+    // ......
+}
+```
+
+为了更好地表示和管理游戏状态，我们引入了 `Result` 的枚举数据结构。
+
+```csharp
+// It represents the result of the game.
+public enum Result
+{
+    NOT_FINISHED,
+    WINNER,
+    LOSER,
+}
+```
+
+在 `GameController` 中，我们对用户的点击事件，作出响应，最终对游戏进行胜负判断，以下是 `CheckWinner` 的代码实现。
+
+```csharp
+// It determines whether the player wins the game.
+private Result CheckWinner()
+{
+    Result result = Result.NOT_FINISHED;
+    // Calculate the amount.
+    int leftPriests = leftCoast.model.GetCharacterAmount()[0];
+    int leftDevils = leftCoast.model.GetCharacterAmount()[1];
+    int rightPriests = rightCoast.model.GetCharacterAmount()[0];
+    int rightDevils = rightCoast.model.GetCharacterAmount()[1];
+
+    // When all the characters has gone across the river.
+    if (leftPriests + leftDevils == 6)
+    {
+        result = Result.WINNER;
+    }
+    // When the boat is on the right side.
+    if (boat.location == Location.Right)
+    {
+        rightPriests += boat.model.GetCharacterAmount()[0];
+        rightDevils += boat.model.GetCharacterAmount()[1];
+    }
+    else // When the boat is on the left side.
+    {
+        leftPriests += boat.model.GetCharacterAmount()[0];
+        leftDevils += boat.model.GetCharacterAmount()[1];
+    }
+    // In this case, player lose the game.
+    if ((rightPriests < rightDevils && rightPriests > 0) ||
+        (leftPriests < leftDevils && leftPriests > 0))
+    {
+        result = Result.LOSER;
+    }
+    return result;
 }
 ```
 
@@ -627,7 +678,7 @@ private void GenGameObjects()
 // Let t rotate with specific axis and angle.
 void Rotate(Transform t, Vector3 axis, float angle)
 {
-		var rot = Quaternion.AngleAxis(angle, axis);
+	var rot = Quaternion.AngleAxis(angle, axis);
     t.position = rot * t.position;
     t.rotation *= rot;
 }
@@ -639,7 +690,7 @@ void Rotate(Transform t, Vector3 axis, float angle)
 // Let t rotate around center with specific axis and angle.
 void RotateAround(Transform t, Vector3 center, Vector3 axis, float angle)
 {
-		var position = t.position;
+	var position = t.position;
     var rot = Quaternion.AngleAxis(angle, axis);
     var direction = position - center;
     direction = rot * direction;
