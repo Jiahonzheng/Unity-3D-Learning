@@ -9,11 +9,22 @@ namespace PriestsAndDevils
         public Result result;
         private IUserAction action;
 
+        private const string title = "Priests and Devils";
+        private const string author = "Jiahonzheng";
+        private const string rule =
+@"Cube: Periest    Sphere: Devil
+3 priests and 3 devils want to go across the river.
+The boat can only carries two persons each time.
+One person must steer the boat.
+Click on person or boat to make it move.
+Priests get killed when less than devils on either side.
+You should keep all priests alive!";
+
         // Use this for initialization
         void Start()
         {
             result = Result.NOT_FINISHED;
-            action = Director.GetInstance().CurrentSceneController as IUserAction;
+            action = Director.GetInstance().currentSceneController as IUserAction;
         }
 
         void OnGUI()
@@ -23,13 +34,20 @@ namespace PriestsAndDevils
                 fontSize = 40,
                 alignment = TextAnchor.MiddleCenter
             };
+            var ruleStyle = new GUIStyle
+            {
+                fontSize = 20,
+                fontStyle = FontStyle.Normal
+            };
             var buttonStyle = new GUIStyle("button")
             {
                 fontSize = 30
             };
-            // Show the title.
-            GUI.Label(new Rect(Screen.width / 2 - 50, Screen.height / 2 - 300, 100, 50), "Priests and Devils", textStyle);
-            GUI.Label(new Rect(Screen.width / 2 - 50, Screen.height / 2 - 220, 100, 50), "Jiahonzheng", textStyle);
+            // Show the title and the author.
+            GUI.Label(new Rect(Screen.width / 2 - 50, Screen.height / 2 - 300, 100, 50), title, textStyle);
+            GUI.Label(new Rect(Screen.width / 2 - 50, Screen.height / 2 - 250, 100, 50), author, textStyle);
+            // Show the rules.
+            GUI.Label(new Rect(Screen.width / 2 - 500, Screen.height / 2 - 220, 100, 50), rule, ruleStyle);
             // Show the result.
             if (result != Result.NOT_FINISHED)
             {

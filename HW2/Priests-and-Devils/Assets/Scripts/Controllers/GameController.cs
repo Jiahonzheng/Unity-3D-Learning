@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 namespace PriestsAndDevils
 {
@@ -15,14 +16,14 @@ namespace PriestsAndDevils
         public CoastController leftCoast;
         public CoastController rightCoast;
         public BoatController boat;
-        public CharacterController[] characters = new CharacterController[6];
+        public  List<CharacterController> characters = new List<CharacterController>(6);
         private GameGUI gui;
 
         void Awake()
         {
             // Set the current scene controller.
             Director director = Director.GetInstance();
-            director.CurrentSceneController = this;
+            director.currentSceneController = this;
             // Add GUI.
             gui = gameObject.AddComponent<GameGUI>() as GameGUI;
             // Load the resources.
@@ -31,6 +32,12 @@ namespace PriestsAndDevils
 
         // Load the resources.
         public void LoadResources()
+        {
+            GenGameObjects();
+        }
+
+        // It generates the GameObjects.
+        private void GenGameObjects()
         {
             // Load River.
             {

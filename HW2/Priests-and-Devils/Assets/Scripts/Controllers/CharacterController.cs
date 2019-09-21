@@ -32,7 +32,7 @@ namespace PriestsAndDevils
         public new void Reset()
         {
             base.Reset();
-            GoAshore((Director.GetInstance().CurrentSceneController as GameController).rightCoast);
+            GoAshore((Director.GetInstance().currentSceneController as GameController).rightCoast);
         }
     }
 }
