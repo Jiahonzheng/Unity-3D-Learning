@@ -678,7 +678,7 @@ private void GenGameObjects()
 // Let t rotate with specific axis and angle.
 void Rotate(Transform t, Vector3 axis, float angle)
 {
-	var rot = Quaternion.AngleAxis(angle, axis);
+    var rot = Quaternion.AngleAxis(angle, axis);
     t.position = rot * t.position;
     t.rotation *= rot;
 }
@@ -690,7 +690,7 @@ void Rotate(Transform t, Vector3 axis, float angle)
 // Let t rotate around center with specific axis and angle.
 void RotateAround(Transform t, Vector3 center, Vector3 axis, float angle)
 {
-	var position = t.position;
+    var position = t.position;
     var rot = Quaternion.AngleAxis(angle, axis);
     var direction = position - center;
     direction = rot * direction;
