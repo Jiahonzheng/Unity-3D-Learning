@@ -136,8 +136,8 @@ public class Example : MonoBehaviour
     void Update ()
     {
         t += Time.deltaTime;
-        transform.Translate(transform.forward* 1 *Time.deltaTime, Space.World);
-        transform.Translate(transform.up * t * Time.deltaTime, Space.World);
+        transform.Translate(Vector3.left * Time.deltaTime, Space.World);
+        transform.Translate(Vector3.down * t * Time.deltaTime, Space.World);
     }
 }
 ```
@@ -171,15 +171,13 @@ using UnityEngine;
 
 public class Example : MonoBehaviour
 {
-    Vector3 horizontal = new Vector3(10,0,0);
-    Vector3 vertical = new Vector3(0,0,0);
+    private float t = 1;
 
     // Update is called once per frame.
     void Update ()
     {
-        Vector3 next = transform.position + horizontal * Time.deltaTime - vertical * Time.deltaTime;
-        vertical.y += 1 * Time.deltaTime;
-        next.y -= 0.5f * (Time.deltaTime)* (Time.deltaTime);
+    		t += Time.deltaTime;
+        Vector3 next = transform.position + Vector3.left * Time.deltaTime + Vector3.down * t * Time.deltaTime;
         transform.position = Vector3.Slerp(transform.position, next, 1);
     }
 }
@@ -445,7 +443,49 @@ MVC 是界面人机交互程序设计的一种架构模式，它把程序分为�
 
 ##### Model
 
+在实现中，我设计并实现了这些 `Model` ：`Character` 、`Boat` 和 `Coast` 。
+
+在 `Character` 中，我们维护牧师和魔鬼的 `name` 、 `Location` 和 `isOnboard` 。
+
+```csharp
+// 用于描述游戏对象的位置：位于左岸、位于右岸。
+public enum Location { Left, Right };
+```
+
+在 `Boat` 和 `Coast` 中，我们除了维护其 `name` 和 `Location` 信息，还维护了**空位**和**乘客**信息，具体请参考代码实现。
+
 ##### Controller
+
+针对每一个 `Model` ，我实现了对应的 `Controller` ，用于控制对应游戏对象的运动，值得注意的是，它们都继承于 `Moveable` 类。
+
+- `Moveable`
+  - `SetDestination`：使对应游戏对象运动至指定位置。
+  - `Reset`：在重置游戏时使用。
+- `CharacterController`
+  - `GoAboard`：当玩家点击牧师或魔鬼，使之上船时，被调用。
+  - `GoAshore`：当玩家点击牧师或魔鬼，使之上岸时，被调用。
+- `BoatController`
+  - `Move`：当玩家点击船只，使之运动时，被调用。
+  - `GoAboard`：配合 `CharacterController` 的 `GoAboard` 使用。
+  - `GoAshore`：配合 `CharacterController` 的 `GoAshore` 使用。
+- `CoastController`
+  - `GoAboard`：配合 `CharacterController` 的 `GoAboard` 使用。
+  - `GoAshore`：配合 `CharacterController` 的 `GoAshore` 使用。
+
+在 `GameController` 中，我们通过调用子控制器，实现对游戏对象的运动控制。在 `GameController` 中，我使用了**集合数据类型**来管理游戏对象。
+
+```csharp
+public class GameController : MonoBehaviour, ISceneController, IUserAction
+{
+        public CoastController leftCoast;
+        public CoastController rightCoast;
+        public BoatController boat;
+        // 使用 集合数据类型 管理游戏对象。
+        public  List<CharacterController> characters = new List<CharacterController>(6);
+        private GameGUI gui;
+        // ......
+}
+```
 
 ##### View
 
