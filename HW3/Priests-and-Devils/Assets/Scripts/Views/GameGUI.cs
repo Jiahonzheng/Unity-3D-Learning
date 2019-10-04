@@ -47,7 +47,7 @@ You should keep all priests alive!";
             GUI.Label(new Rect(Screen.width / 2 - 50, Screen.height / 2 - 300, 100, 50), title, textStyle);
             GUI.Label(new Rect(Screen.width / 2 - 50, Screen.height / 2 - 250, 100, 50), author, textStyle);
             // Show the rules.
-            GUI.Label(new Rect(Screen.width / 2 - 500, Screen.height / 2 - 220, 100, 50), rule, ruleStyle);
+            GUI.Label(new Rect(Screen.width / 2 - 450, Screen.height / 2 - 220, 100, 50), rule, ruleStyle);
             // Show the result.
             if (result != Result.NOT_FINISHED)
             {
