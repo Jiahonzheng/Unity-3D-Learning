@@ -5,6 +5,7 @@ namespace PriestsAndDevils
 {
     public class ActionManager : MonoBehaviour, IActionCallback
     {
+        // 存储所有动作。
         private Dictionary<int, Action> actions = new Dictionary<int, Action>();
         private List<Action> waitToAdd = new List<Action>();
         private List<int> waitToDelete = new List<int>();
@@ -16,7 +17,7 @@ namespace PriestsAndDevils
                 actions[action.GetInstanceID()] = action;
             }
             waitToAdd.Clear();
-
+            // 执行每一个动作。
             foreach (KeyValuePair<int, Action> kv in actions)
             {
                 Action action = kv.Value;
@@ -29,7 +30,7 @@ namespace PriestsAndDevils
                     action.Update();
                 }
             }
-
+            // 删除已完成的动作对应的数据结构。
             foreach (int k in waitToDelete)
             {
                 Action action = actions[k];
@@ -39,6 +40,7 @@ namespace PriestsAndDevils
             waitToDelete.Clear();
         }
 
+        // 添加动作。
         public void AddAction(Action action)
         {
             waitToAdd.Add(action);

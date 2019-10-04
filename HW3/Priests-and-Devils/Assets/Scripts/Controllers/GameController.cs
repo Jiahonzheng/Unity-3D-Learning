@@ -3,14 +3,6 @@ using System.Collections.Generic;
 
 namespace PriestsAndDevils
 {
-    // It represents the result of the game.
-    public enum Result
-    {
-        NOT_FINISHED,
-        WINNER,
-        LOSER,
-    }
-
     public class GameController : MonoBehaviour, ISceneController, IUserAction
     {
         private Game game;
@@ -30,7 +22,9 @@ namespace PriestsAndDevils
             // Initialize the action manager.
             actionManager = gameObject.AddComponent<GameActionManager>();
             // Initialize the game model.
+            // 初始化裁判类。
             game = new Game(boat.model, leftCoast.model, rightCoast.model);
+            // 裁判类通知场景控制器游戏胜负。
             game.onChange += delegate
             {
                 gui.result = game.result;
