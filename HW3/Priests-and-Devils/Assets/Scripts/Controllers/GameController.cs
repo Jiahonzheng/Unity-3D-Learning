@@ -46,11 +46,6 @@ namespace PriestsAndDevils
         // It generates the GameObjects.
         private void GenGameObjects()
         {
-            // Load River.
-            {
-                GameObject temp = Utils.Instantiate("Prefabs/Water", new Vector3(0, 0.5f, 0));
-                temp.name = "River";
-            }
             // Load LeftCoast.
             {
                 GameObject temp = Utils.Instantiate("Prefabs/Stone", Coast.departure);
