@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-enum Player { pl };
-
 namespace TicTacToe.UI
 {
     public class SinglePlayerModeController : GameController
