@@ -16,7 +16,7 @@ namespace PriestsAndDevils
         public CoastController leftCoast;
         public CoastController rightCoast;
         public BoatController boat;
-        public  List<CharacterController> characters = new List<CharacterController>(6);
+        public List<CharacterController> characters = new List<CharacterController>(6);
         private GameGUI gui;
 
         void Awake()
