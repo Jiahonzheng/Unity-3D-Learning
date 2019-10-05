@@ -472,10 +472,10 @@ using UnityEngine;
 
 public class ReverbZone : MonoBehaviour
 {
-		void Update()
-		{
-				transform.position += Vector3.forward * 1 * time.deltaTime;
-		}
+    void Update()
+    {
+        transform.position += Vector3.forward * 1 * time.deltaTime;
+    }
 }
 ```
 
