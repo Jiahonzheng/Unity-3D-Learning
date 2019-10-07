@@ -22,6 +22,7 @@ namespace HitUFO
             currentTrial = 0;
             score = 0;
             onRefresh.Invoke(this, EventArgs.Empty);
+            onEnterNextRound.Invoke(this, EventArgs.Empty);
         }
 
         public void NextRound()
@@ -66,10 +67,9 @@ namespace HitUFO
         public void SubScore()
         {
             this.score -= (currentRound + 1) * 10;
-            if (this.score < 0)
+            if (score < 0)
             {
-                this.score = 0;
-                this.game = GameState.Lose;
+                Reset(GameState.Lose);
             }
             onRefresh.Invoke(this, EventArgs.Empty);
         }

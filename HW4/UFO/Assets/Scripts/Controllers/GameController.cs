@@ -20,7 +20,7 @@ namespace HitUFO
             view = gameObject.AddComponent<GameGUI>();
             view.onPressRestartButton += delegate
             {
-                Reset();
+                model.Reset();
             };
             view.onPressNextRoundButton += delegate
             {
@@ -89,11 +89,6 @@ namespace HitUFO
         }
 
         public void LoadResources() { }
-
-        public void Reset()
-        {
-            model.Reset();
-        }
 
         private IEnumerator DestroyExplosion(GameObject ufo)
         {
