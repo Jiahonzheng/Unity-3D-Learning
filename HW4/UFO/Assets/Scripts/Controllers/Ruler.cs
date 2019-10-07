@@ -26,25 +26,29 @@ namespace HitUFO
             return UFOCount[currentRound];
         }
 
+        // 在用户按下空格键后被触发，发射飞碟。
         public List<GameObject> GetUFOs()
         {
             List<GameObject> ufos = new List<GameObject>();
-
+            // 随机生成飞碟颜色。
             var index = random.Next(colors.Length);
             var color = (UFOFactory.Color)colors.GetValue(index);
-
+            // 获取当前 Round 下的飞碟产生数。
             var count = GetUFOCount();
             for (int i = 0; i < count; ++i)
             {
+                // 调用工厂方法，获取指定颜色的飞碟对象。
                 var ufo = UFOFactory.GetInstance().Get(color);
+                // 设置飞碟对象的分数。
                 var model = ufo.GetComponent<UFOModel>();
-                var rigidbody = ufo.GetComponent<Rigidbody>();
-
                 model.score = score[index] * (currentRound + 1);
-
-                var leftOrRight = (random.Next() & 2) - 1;
-                ufo.transform.position = new Vector3(-3 * leftOrRight, 2 + i, -15);
+                // 设置飞碟对象的缩放比例。
                 ufo.transform.localScale = new Vector3(scale[index], 0.08f, scale[index]);
+                // 随机设置飞碟的初始位置（左边、右边）。
+                var leftOrRight = (random.Next() & 2) - 1; // 随机生成 1 或 -1 。
+                ufo.transform.position = new Vector3(-3 * leftOrRight, 2 + i, -15);
+                // 设置飞碟对象的刚体属性，以及初始受力方向。
+                var rigidbody = ufo.GetComponent<Rigidbody>();
                 rigidbody.AddForce(0.2f * speed[index] * new Vector3(3 * leftOrRight, 11, 8), ForceMode.Impulse);
                 rigidbody.useGravity = true;
                 ufos.Add(ufo);

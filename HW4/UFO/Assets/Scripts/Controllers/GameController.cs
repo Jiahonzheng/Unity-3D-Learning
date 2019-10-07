@@ -37,6 +37,7 @@ namespace HitUFO
                 }
             };
             ruler = new Ruler(model.currentRound);
+            // 更新游戏画面。
             model.onRefresh += delegate
             {
                 view.state = model.game;
@@ -44,6 +45,7 @@ namespace HitUFO
                 view.trial = model.currentTrial;
                 view.score = model.score;
             };
+            // 更新 Ruler 。
             model.onEnterNextRound += delegate
             {
                 ruler = new Ruler(model.currentRound);
@@ -62,17 +64,21 @@ namespace HitUFO
             {
                 if (model.scene == SceneState.Shooting && Input.GetButtonDown("Fire1"))
                 {
+                    // 光标拾取单个游戏对象。
+                    // 构建射线。
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    // 当射线与飞碟碰撞时，即说明我们想用鼠标点击此飞碟。
                     if (Physics.Raycast(ray, out RaycastHit hit) && hit.collider.gameObject.tag == "UFO")
                     {
                         OnHitUFO(hit.collider.gameObject);
                     }
                 }
-
+                // 发射飞碟。
                 if (model.scene == SceneState.Waiting && Input.GetKeyDown("space"))
                 {
                     model.scene = SceneState.Shooting;
                     model.NextTrial();
+                    // 添加此判断的原因：对于最后一次按下空格键，若玩家满足胜利条件，则不发射飞碟。
                     if (model.game == GameState.Win)
                     {
                         return;
@@ -88,33 +94,47 @@ namespace HitUFO
 
         }
 
+        // 由于场景并无需要初始化的资源，故函数体为空。
         public void LoadResources() { }
 
+        // 该协程用于控制飞碟爆炸效果。
         private IEnumerator DestroyExplosion(GameObject ufo)
         {
+            // 实例化预制。
             GameObject explosion = Instantiate(explosionPrefab);
+            // 设置爆炸效果的位置。
             explosion.transform.position = ufo.transform.position;
+            // 爆炸效果持续 1.2 秒。
             yield return new WaitForSeconds(1.2f);
+            // 销毁爆炸效果对象。
             Destroy(explosion);
         }
 
+        // 在用户成功点击飞碟后被触发。
         private void OnHitUFO(GameObject ufo)
         {
+            // 创建协程，用于控制飞碟爆炸效果的延续时间。
             StartCoroutine("DestroyExplosion", ufo);
-
+            // 增加分数。
             model.AddScore(ufo.GetComponent<UFOModel>().score);
+            // 回收飞碟对象。
             DestroyUFO(ufo);
         }
 
+        // 在用户错失飞碟后被触发。
         private void OnMissUFO(GameObject ufo)
         {
+            // 扣除分数。
             model.SubScore();
+            // 回收飞碟对象。
             DestroyUFO(ufo);
         }
 
+        // 回收飞碟对象。
         private void DestroyUFO(GameObject ufo)
         {
             UFOs.Remove(ufo);
+            // 调用工厂模式的回收方法。
             UFOFactory.GetInstance().Put(ufo);
         }
     }
