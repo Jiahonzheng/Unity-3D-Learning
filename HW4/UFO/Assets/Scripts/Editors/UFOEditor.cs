@@ -11,16 +11,16 @@ namespace HitUFO
             var target = (UFOModel)serializedObject.targetObject;
 
             EditorGUILayout.Space();
-            Vector3 startPosition = EditorGUILayout.Vector3Field("Start Position", target.startPosition);
-            target.startPosition = startPosition;
+            Vector3 startPosition = EditorGUILayout.Vector3Field("Start Position", UFOModel.startPosition);
+            UFOModel.startPosition = startPosition;
 
             EditorGUILayout.Space();
-            Vector3 startSpeed = EditorGUILayout.Vector3Field("Initial Speed", target.startSpeed);
-            target.startSpeed = startSpeed;
+            Vector3 startSpeed = EditorGUILayout.Vector3Field("Initial Speed", UFOModel.startSpeed);
+            UFOModel.startSpeed = startSpeed;
 
             EditorGUILayout.Space();
-            Vector3 localScale = EditorGUILayout.Vector3Field("Local Scale", target.localScale);
-            target.localScale = localScale;
+            Vector3 localScale = EditorGUILayout.Vector3Field("Local Scale", UFOModel.localScale);
+            UFOModel.localScale = localScale;
         }
     }
 }
