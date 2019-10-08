@@ -104,6 +104,8 @@ namespace HitUFO
             GameObject explosion = Instantiate(explosionPrefab);
             // 设置爆炸效果的位置。
             explosion.transform.position = ufo.transform.position;
+            // 回收飞碟对象。
+            DestroyUFO(ufo);
             // 爆炸效果持续 1.2 秒。
             yield return new WaitForSeconds(1.2f);
             // 销毁爆炸效果对象。
@@ -113,12 +115,10 @@ namespace HitUFO
         // 在用户成功点击飞碟后被触发。
         private void OnHitUFO(GameObject ufo)
         {
-            // 创建协程，用于控制飞碟爆炸效果的延续时间。
-            StartCoroutine("DestroyExplosion", ufo);
             // 增加分数。
             model.AddScore(ufo.GetComponent<UFOModel>().score);
-            // 回收飞碟对象。
-            DestroyUFO(ufo);
+            // 创建协程，用于控制飞碟爆炸效果的延续时间。
+            StartCoroutine("DestroyExplosion", ufo);
         }
 
         // 在用户错失飞碟后被触发。
