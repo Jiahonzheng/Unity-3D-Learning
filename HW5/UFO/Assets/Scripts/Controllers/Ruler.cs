@@ -48,9 +48,11 @@ namespace HitUFO
                 model.SetLocalScale(scale[index], 1, scale[index]);
                 // 随机设置飞碟的初始位置（左边、右边）。
                 var leftOrRight = (random.Next() & 2) - 1; // 随机生成 1 或 -1 。
-                model.SetSide(leftOrRight, i);
+                model.SetSide(leftOrRight);
                 // 设置飞碟的速度比例。
                 model.SetSpeedScale(speed[index]);
+                // 设置飞碟 ID 。
+                model.SetID(i);
                 // 设置飞碟对象的运动学属性。
                 actionManager.SetAction(ufo);
                 ufos.Add(ufo);

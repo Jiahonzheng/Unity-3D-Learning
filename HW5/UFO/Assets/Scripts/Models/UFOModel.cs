@@ -16,6 +16,8 @@ namespace HitUFO
         private int leftOrRight;
         // 表示飞碟的速度比例。
         private float speedScale = 1;
+        // 表示飞碟ID，用于 transfor.position 区分。
+        private int id;
 
         // 获取实际初速度。
         public Vector3 GetSpeed()
@@ -25,6 +27,12 @@ namespace HitUFO
             return v;
         }
 
+        // 获取飞碟对象ID。
+        public int GetID()
+        {
+            return id;
+        }
+
         // 设置速度比例。
         public void SetSpeedScale(float scale)
         {
@@ -32,11 +40,11 @@ namespace HitUFO
         }
 
         // 设置实际初位置。
-        public void SetSide(int lr, float dy)
+        public void SetSide(int lr)
         {
             Vector3 v = startPosition;
             v.x *= lr;
-            v.y += dy;
+            v.y += GetID();
             transform.position = v;
             leftOrRight = lr;
         }
@@ -49,6 +57,12 @@ namespace HitUFO
             lc.y *= y;
             lc.z *= z;
             transform.localScale = lc;
+        }
+
+        // 设置飞碟对象ID。
+        public void SetID(int id)
+        {
+            this.id = id;
         }
     }
 }

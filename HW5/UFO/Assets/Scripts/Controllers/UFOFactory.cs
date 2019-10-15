@@ -20,7 +20,7 @@ namespace HitUFO
         // 维护未被使用的飞碟对象。
         private List<GameObject> notUsed = new List<GameObject>();
         // 空闲飞碟对象的空间位置。
-        private readonly Vector3 invisible = new Vector3(0, -100, 0);
+        public static Vector3 invisible = new Vector3(0, -100, 0);
 
         // 使用单例模式。
         public static UFOFactory GetInstance()
