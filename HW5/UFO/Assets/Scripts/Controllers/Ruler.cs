@@ -8,17 +8,19 @@ namespace HitUFO
     {
         private readonly int currentRound;
         private System.Random random;
-
+        private IActionManager actionManager;
         private static Array colors = Enum.GetValues(typeof(UFOFactory.Color));
         private static int[] UFOCount = { 1, 3, 4, 5, 6, 6, 8, 8, 8, 9 };
         private static int[] score = { 1, 5, 10 };
         private static float[] speed = { 0.5f, 0.6f, 0.7f };
         private static float[] scale = { 2f, 1.5f, 1f };
 
-        public Ruler(int currentRound)
+        public Ruler(int currentRound, IActionManager actionManager)
         {
             this.currentRound = currentRound;
             this.random = new System.Random();
+            // 设置运动学模型。
+            this.actionManager = actionManager;
         }
 
         public int GetUFOCount()
@@ -47,13 +49,12 @@ namespace HitUFO
                 // 随机设置飞碟的初始位置（左边、右边）。
                 var leftOrRight = (random.Next() & 2) - 1; // 随机生成 1 或 -1 。
                 model.SetSide(leftOrRight, i);
-                // 设置飞碟对象的刚体属性，以及初始受力方向。
-                var rigidbody = ufo.GetComponent<Rigidbody>();
-                rigidbody.AddForce(0.2f * speed[index] * model.GetSpeed(), ForceMode.Impulse);
-                rigidbody.useGravity = true;
+                // 设置飞碟的速度比例。
+                model.SetSpeedScale(speed[index]);
+                // 设置飞碟对象的运动学属性。
+                actionManager.SetAction(ufo);
                 ufos.Add(ufo);
             }
-
             return ufos;
         }
     }

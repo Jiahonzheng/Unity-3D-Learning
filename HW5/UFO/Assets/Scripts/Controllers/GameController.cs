@@ -8,8 +8,11 @@ namespace HitUFO
     {
         private GameModel model = new GameModel();
         private GameGUI view;
+        // 管理飞碟的颜色、分数、颜色、个数。
         private Ruler ruler;
-
+        // 管理飞碟的运动学模型：物理运动、运动学（变换）。
+        private IActionManager actionManager;
+        // 预设：飞碟点击爆炸效果。
         public GameObject explosionPrefab;
 
         private List<GameObject> UFOs = new List<GameObject>();
@@ -36,7 +39,9 @@ namespace HitUFO
                     model.NextTrial();
                 }
             };
-            ruler = new Ruler(model.currentRound);
+            // 使用“物理运动”模型。
+            actionManager = new CCActionManager();
+            ruler = new Ruler(model.currentRound, actionManager);
             // 更新游戏画面。
             model.onRefresh += delegate
             {
@@ -48,7 +53,7 @@ namespace HitUFO
             // 更新 Ruler 。
             model.onEnterNextRound += delegate
             {
-                ruler = new Ruler(model.currentRound);
+                ruler = new Ruler(model.currentRound, actionManager);
             };
         }
 

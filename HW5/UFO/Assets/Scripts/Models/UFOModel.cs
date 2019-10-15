@@ -14,13 +14,21 @@ namespace HitUFO
         public static Vector3 localScale = new Vector3(1, 0.08f, 1);
         // 表示飞碟的位置（左边、右边）。
         private int leftOrRight;
+        // 表示飞碟的速度比例。
+        private float speedScale = 1;
 
         // 获取实际初速度。
         public Vector3 GetSpeed()
         {
-            Vector3 v = startSpeed;
+            Vector3 v = speedScale * startSpeed;
             v.x *= leftOrRight;
             return v;
+        }
+
+        // 设置速度比例。
+        public void SetSpeedScale(float scale)
+        {
+            speedScale = scale;
         }
 
         // 设置实际初位置。
