@@ -41,6 +41,8 @@ namespace HitUFO
             };
             // 使用“运动学（变换）运动”模型。
             actionManager = new CCActionManager();
+            // 使用“物理运动”模型。
+            // actionManager = new PhysicActionManager();
             ruler = new Ruler(model.currentRound, actionManager);
             // 更新游戏画面。
             model.onRefresh += delegate
