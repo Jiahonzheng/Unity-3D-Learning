@@ -33,7 +33,9 @@ namespace Archery
             view = gameObject.AddComponent<GameGUI>();
             model.onGameModelChanged += (sender, e) =>
             {
+                // 显示分数。
                 view.ShowScore(e.score);
+                // 显示命中环数。
                 view.ShowTips(e.delta);
             };
         }
@@ -60,7 +62,6 @@ namespace Archery
                 }
                 return;
             }
-
         }
 
         public void LoadResources()
@@ -88,12 +89,14 @@ namespace Archery
         public void ShootArrow(Vector3 direction)
         {
             var collider = holdingArrow.GetComponentInChildren<ArrowCollider>();
+            // 重置箭的击中状态。
             collider.Reset();
-            collider.onArrowHitTarget = (sender, e) =>
+            // 设置箭击中物体后的回调函数。
+            collider.onArrowHitObject = (sender, e) =>
             {
-                OnArrowHitTarget(e);
+                OnArrowHitObject(e);
             };
-
+            // 添加 Impulse 力。
             var rigidbody = holdingArrow.GetComponent<Rigidbody>();
             rigidbody.isKinematic = false;
             rigidbody.AddForce(30 * direction, ForceMode.Impulse);
@@ -109,6 +112,7 @@ namespace Archery
             {
                 return;
             }
+            // 寻找脱靶以及未命中箭靶的箭。
             var invisibleArrows = arrows.FindAll(x => x.transform.position.y <= -8f || x.GetComponentInChildren<ArrowCollider>().isHitTarget == false);
             foreach (var arrow in invisibleArrows)
             {
@@ -122,23 +126,11 @@ namespace Archery
             }
         }
 
-        private void ResetSceneStatus()
-        {
-            if (model.scene != SceneState.Shooting)
-            {
-                return;
-            }
-            var invisibleArrows = arrows.FindAll(x => x.transform.position.y <= -8f);
-            if (invisibleArrows.Count == 0)
-            {
-                model.scene = SceneState.WaitToGetArrow;
-                return;
-            }
-        }
-
-        void OnArrowHitTarget(ArrowHitTargetEvent e)
+        // 当箭命中物体时，此函数被触发执行。
+        void OnArrowHitObject(ArrowHitObjectEvent e)
         {
             model.AddScore(e.target);
+            // 只有当 target 不为零时，才是击中箭靶，否则只是击中箭。
             if (e.target != 0)
             {
                 arrows.Remove(e.arrow);

@@ -38,7 +38,7 @@ namespace Archery
             }
             return arrow;
         }
-        
+
         // 回收一支箭。
         public void Put(GameObject arrow)
         {

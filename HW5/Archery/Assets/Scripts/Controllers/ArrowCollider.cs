@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace Archery
 {
-    public class ArrowHitTargetEvent : EventArgs
+    public class ArrowHitObjectEvent : EventArgs
     {
         public GameObject arrow;
         public int target;
 
-        public ArrowHitTargetEvent(GameObject arrow, int target)
+        public ArrowHitObjectEvent(GameObject arrow, int target)
         {
             this.arrow = arrow;
             this.target = target;
@@ -17,7 +17,7 @@ namespace Archery
 
     public class ArrowCollider : MonoBehaviour
     {
-        public EventHandler<ArrowHitTargetEvent> onArrowHitTarget;
+        public EventHandler<ArrowHitObjectEvent> onArrowHitObject;
         public bool isHitTarget = true;
 
         public void Reset()
@@ -29,17 +29,19 @@ namespace Archery
         {
             var otherObject = other.gameObject;
             var arrow = gameObject.transform.parent.gameObject;
+            // 当箭击中箭靶时。
             if (otherObject.tag == "target")
             {
                 arrow.GetComponent<Rigidbody>().isKinematic = true;
                 gameObject.SetActive(false);
                 int target = otherObject.name[other.gameObject.name.Length - 1] - '0';
                 isHitTarget = true;
-                onArrowHitTarget.Invoke(this, new ArrowHitTargetEvent(arrow, target));
-            } else
+                onArrowHitObject.Invoke(this, new ArrowHitObjectEvent(arrow, target));
+            }
+            else // 当箭击中其他物体时。
             {
                 isHitTarget = false;
-                onArrowHitTarget.Invoke(this, new ArrowHitTargetEvent(arrow, 0));
+                onArrowHitObject.Invoke(this, new ArrowHitObjectEvent(arrow, 0));
             }
         }
     }
