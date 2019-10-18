@@ -31,6 +31,10 @@ namespace Archery
         public int score = 0;
         public EventHandler<GameModelChangedEvent> onGameModelChanged;
         public Wind currentWind = new GameModel.Wind(Vector3.zero, 0, "");
+        // 风向。
+        private Vector3[] winds = new Vector3[8] { new Vector3(0, 1, 0), new Vector3(1, 1, 0), new Vector3(1, 0, 0), new Vector3(1, -1, 0), new Vector3(0, -1, 0), new Vector3(-1, -1, 0), new Vector3(-1, 0, 0), new Vector3(-1, 1, 0) };
+        // 风向描述。
+        private string[] windsText = new string[8] { "↑", "↗", "→", "↘", "↓", "↙", "←", "↖" };
 
         public class Wind
         {
@@ -46,15 +50,14 @@ namespace Archery
             }
         }
 
-        private Vector3[] winds = new Vector3[8] { new Vector3(0, 1, 0), new Vector3(1, 1, 0), new Vector3(1, 0, 0), new Vector3(1, -1, 0), new Vector3(0, -1, 0), new Vector3(-1, -1, 0), new Vector3(-1, 0, 0), new Vector3(-1, 1, 0) };
-        private string[] windsText = new string[8] { "↑", "↗", "→", "↘", "↓", "↙", "←", "↖" };
-
+        // 添加分数
         public void AddScore(int target)
         {
             score += target;
             onGameModelChanged.Invoke(this, new GameModelChangedEvent(score, target));
         }
-
+        
+        // 添加随机风向。
         public void AddWind()
         {
             var index = UnityEngine.Random.Range(0, 8);
