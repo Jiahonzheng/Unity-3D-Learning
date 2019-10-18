@@ -4,8 +4,11 @@ namespace Archery
 {
     public enum SceneState
     {
+        // 等待获取箭
         WaitToGetArrow,
+        // 等待射箭
         WaitToShootArrow,
+        // 箭已射出
         Shooting,
     }
 

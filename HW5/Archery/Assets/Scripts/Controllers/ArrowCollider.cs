@@ -34,7 +34,7 @@ namespace Archery
             {
                 arrow.GetComponent<Rigidbody>().isKinematic = true;
                 gameObject.SetActive(false);
-                int target = otherObject.name[other.gameObject.name.Length - 1] - '0';
+                int target = int.Parse(otherObject.name);
                 isHitTarget = true;
                 onArrowHitObject.Invoke(this, new ArrowHitObjectEvent(arrow, target));
             }
