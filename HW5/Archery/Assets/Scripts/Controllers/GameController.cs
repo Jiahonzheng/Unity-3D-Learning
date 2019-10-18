@@ -37,7 +37,11 @@ namespace Archery
                 view.ShowScore(e.score);
                 // 显示命中环数。
                 view.ShowTips(e.delta);
+                // 显示风向和风速。
+                view.ShowWind(model.currentWind);
             };
+            // 显示风向和风速。
+            view.ShowWind(model.currentWind);
         }
 
         void Update()
@@ -75,6 +79,9 @@ namespace Archery
         {
             holdingArrow = arrowFactory.Get();
             arrows.Add(holdingArrow);
+            // 设置风向和风速。
+            model.AddWind();
+            view.ShowWind(model.currentWind);
             // 设置游戏状态。
             model.scene = SceneState.WaitToShootArrow;
         }
@@ -101,6 +108,8 @@ namespace Archery
             rigidbody.isKinematic = false;
             rigidbody.AddForce(30 * direction, ForceMode.Impulse);
             holdingArrow = null;
+            // 添加风力
+            rigidbody.AddForce(5 * model.currentWind.direction, ForceMode.Force);
             // 设置游戏状态。
             model.scene = SceneState.Shooting;
         }
