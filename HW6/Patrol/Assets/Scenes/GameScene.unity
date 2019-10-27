@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.4366757, g: 0.48427194, b: 0.5645252, a: 1}
+  m_IndirectSpecularColor: {r: 0.4366756, g: 0.48427135, b: 0.56452316, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -181,63 +181,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!1001 &188807497
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1112419276074246, guid: 9455d9a953d048243a5075286756792d, type: 3}
-      propertyPath: m_Name
-      value: PlaneT
-      objectReference: {fileID: 0}
-    - target: {fileID: 4055127059417218, guid: 9455d9a953d048243a5075286756792d, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -13.164269
-      objectReference: {fileID: 0}
-    - target: {fileID: 4055127059417218, guid: 9455d9a953d048243a5075286756792d, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 19.070808
-      objectReference: {fileID: 0}
-    - target: {fileID: 4055127059417218, guid: 9455d9a953d048243a5075286756792d, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -35.29964
-      objectReference: {fileID: 0}
-    - target: {fileID: 4055127059417218, guid: 9455d9a953d048243a5075286756792d, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4055127059417218, guid: 9455d9a953d048243a5075286756792d, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4055127059417218, guid: 9455d9a953d048243a5075286756792d, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4055127059417218, guid: 9455d9a953d048243a5075286756792d, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4055127059417218, guid: 9455d9a953d048243a5075286756792d, type: 3}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4055127059417218, guid: 9455d9a953d048243a5075286756792d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4055127059417218, guid: 9455d9a953d048243a5075286756792d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4055127059417218, guid: 9455d9a953d048243a5075286756792d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 9455d9a953d048243a5075286756792d, type: 3}
 --- !u!1 &534669902
 GameObject:
   m_ObjectHideFlags: 0
