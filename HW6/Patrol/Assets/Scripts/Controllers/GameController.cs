@@ -6,6 +6,8 @@ namespace Patrol
 {
     public class GameController : MonoBehaviour, ISceneController
     {
+        public GameModel model = new GameModel();
+
         private GameActionManager actionManager;
         private GameObject player;
         private List<GameObject> soldiers = new List<GameObject>();
@@ -19,20 +21,27 @@ namespace Patrol
 
         void Update()
         {
-            MovePlayer();
-            if (player.transform.localEulerAngles.x != 0 || player.transform.localEulerAngles.z != 0)
+            if (model.state == GameState.RUNNING)
             {
-                player.transform.localEulerAngles = new Vector3(0, player.transform.localEulerAngles.y, 0);
-            }
-            if (player.transform.position.y <= 0)
-            {
-                player.transform.position = new Vector3(player.transform.position.x, 0, player.transform.position.z);
+                var dx = Input.GetAxis("Horizontal");
+                var dz = Input.GetAxis("Vertical");
+                if (dx != 0 || dz != 0)
+                {
+                    player.GetComponent<Animator>().SetBool("isRunning", true);
+                }
+                else
+                {
+                    player.GetComponent<Animator>().SetBool("isRunning", false);
+                }
+                player.transform.Translate(0, 0, dz * 4f * Time.deltaTime);
+                player.transform.Rotate(0, dx * 50f * Time.deltaTime, 0);
             }
         }
 
         void OnEnable()
         {
             GameEventManager.onPlayerEnterArea += OnPlayerEnterArea;
+            GameEventManager.onPlayerCollideWithPatrol += OnPlayerCollideWithPatrol;
         }
 
         public void LoadResources()
@@ -42,13 +51,15 @@ namespace Patrol
             Map.LoadFences();
             Map.LoadAreaColliders();
             LoadSoldiers();
-            player = Instantiate(Resources.Load<GameObject>("Prefabs/Player"));
-            player.transform.position = new Vector3(-4.5f, 0, -4.5f);
+            LoadPlayer();
             Restart();
         }
 
         public void Restart()
         {
+            currentArea = 4;
+            model.state = GameState.RUNNING;
+            player.transform.position = new Vector3(-4.5f, 0, -4.5f);
             player.GetComponent<Animator>().Play("Initial State");
             foreach (var p in soldiers)
             {
@@ -65,23 +76,6 @@ namespace Patrol
             }
         }
 
-        public void MovePlayer()
-        {
-            var dx = Input.GetAxis("Horizontal");
-            var dz = Input.GetAxis("Vertical");
-            if (dx != 0 || dz != 0)
-            {
-                player.GetComponent<Animator>().SetBool("isRunning", true);
-            }
-            else
-            {
-                player.GetComponent<Animator>().SetBool("isRunning", false);
-            }
-            //移动和旋转
-            player.transform.Translate(0, 0, dz * 4f * Time.deltaTime);
-            player.transform.Rotate(0, dx * 50f * Time.deltaTime, 0);
-        }
-
         private void OnPlayerEnterArea(int area)
         {
             if (currentArea != area)
@@ -93,6 +87,13 @@ namespace Patrol
             }
         }
 
+        private void OnPlayerCollideWithPatrol()
+        {
+            model.state = GameState.LOSE;
+            soldiers[currentArea].GetComponent<Patrol>().isFollowing = false;
+            player.GetComponent<Animator>().SetTrigger("isDead");
+        }
+
         private void LoadSoldiers()
         {
             GameObject soldierPrefab = Resources.Load<GameObject>("Prefabs/Soldier");
@@ -101,17 +102,25 @@ namespace Patrol
                 GameObject soldier = Instantiate(soldierPrefab);
                 soldier.AddComponent<Patrol>().area = i;
                 soldier.GetComponent<Animator>().SetBool("isRunning", true);
+                soldier.GetComponent<Rigidbody>().freezeRotation = true;
+                soldier.AddComponent<PlayerCollider>();
                 soldier.name = "Soldier" + i;
                 soldier.transform.position = Map.center[i];
                 soldiers.Add(soldier);
             }
         }
 
+        private void LoadPlayer()
+        {
+            player = Instantiate(Resources.Load<GameObject>("Prefabs/Player"));
+            player.GetComponent<Rigidbody>().freezeRotation = true;
+        }
+
         private void ResetSoldiers()
         {
             for (int i = 0; i < 9; ++i)
             {
-
+                soldiers[i].transform.position = Map.center[i];
             }
         }
     }

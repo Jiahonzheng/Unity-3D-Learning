@@ -11,6 +11,9 @@ namespace Patrol
         public delegate void OnPlayerEnterArea(int area);
         public static event OnPlayerEnterArea onPlayerEnterArea;
 
+        public delegate void OnPlayerCollideWithPatrol();
+        public static event OnPlayerCollideWithPatrol onPlayerCollideWithPatrol;
+
         public static GameEventManager GetInstance()
         {
             return instance ?? (instance = new GameEventManager());
@@ -18,10 +21,12 @@ namespace Patrol
 
         public void PlayerEnterArea(int area)
         {
-            if (onPlayerEnterArea != null)
-            {
-                onPlayerEnterArea(area);
-            }
+            onPlayerEnterArea?.Invoke(area);
+        }
+
+        public void PlayerCollideWithPatrol()
+        {
+            onPlayerCollideWithPatrol?.Invoke();
         }
     }
 }

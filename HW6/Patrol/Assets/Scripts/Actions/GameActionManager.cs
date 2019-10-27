@@ -14,7 +14,7 @@ namespace Patrol
             {
                 moveToActions[area].destroy = true;
             }
-            TraceAction action = TraceAction.GetAction(patrol, this, player, 1.3f);
+            TraceAction action = TraceAction.GetAction(patrol, this, player, 1.5f);
             AddAction(action);
         }
 

@@ -314,6 +314,7 @@ GameObject:
   - component: {fileID: 3605706193718180763}
   - component: {fileID: 7153438999358728784}
   - component: {fileID: 7153438999358728798}
+  - component: {fileID: 8821967561789383357}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -387,6 +388,20 @@ CapsuleCollider:
   m_Height: 1.3
   m_Direction: 1
   m_Center: {x: 0, y: 0.65, z: 0}
+--- !u!64 &8821967561789383357
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3699712785869578757}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 0}
 --- !u!1 &3699712785872434777
 GameObject:
   m_ObjectHideFlags: 0
