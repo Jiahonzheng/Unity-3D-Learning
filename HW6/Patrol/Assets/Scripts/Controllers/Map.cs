@@ -1,22 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Patrol
 {
     class Map : Object
     {
+        // 地图平面预制。
         private static GameObject planePrefab = Resources.Load<GameObject>("Prefabs/Plane");
+        // 篱笆预制。
         private static GameObject fencePrefab = Resources.Load<GameObject>("Prefabs/Fence");
+        // 区域Collider预制。
         private static GameObject areaColliderPrefab = Resources.Load<GameObject>("Prefabs/AreaCollider");
-
+        // 地图 9 个区域的中心点位置。
         public static Vector3[] center = new Vector3[] { new Vector3(-10, 0, -10), new Vector3(0, 0, -10), new Vector3(10, 0, -10), new Vector3(-10, 0, 0), new Vector3(0, 0, 0), new Vector3(10, 0, 0), new Vector3(-10, 0, 10), new Vector3(0, 0, 10), new Vector3(10, 0, 10) };
 
+        // 设置地图平面。
         public static void LoadPlane()
         {
             GameObject map = Instantiate(planePrefab);
         }
 
+        // 设置地图边界篱笆。
         public static void LoadWalls()
         {
             for (int i = 0; i < 12; ++i)
@@ -43,6 +46,7 @@ namespace Patrol
             }
         }
 
+        // 设置篱笆。
         public static void LoadFences()
         {
             var row = new int[2, 12] { { 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1 }, { 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0 } };
@@ -72,6 +76,7 @@ namespace Patrol
             }
         }
 
+        // 设置区域Collider。
         public static void LoadAreaColliders()
         {
             for (int i = 0; i < 9; ++i)

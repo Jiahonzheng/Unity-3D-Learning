@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace Patrol
@@ -91,6 +90,7 @@ namespace Patrol
         {
             model.state = GameState.LOSE;
             soldiers[currentArea].GetComponent<Patrol>().isFollowing = false;
+            player.GetComponent<Rigidbody>().isKinematic = true;
             player.GetComponent<Animator>().SetTrigger("isDead");
         }
 
@@ -103,7 +103,7 @@ namespace Patrol
                 soldier.AddComponent<Patrol>().area = i;
                 soldier.GetComponent<Animator>().SetBool("isRunning", true);
                 soldier.GetComponent<Rigidbody>().freezeRotation = true;
-                soldier.AddComponent<PlayerCollider>();
+                soldier.AddComponent<SoldierCollider>();
                 soldier.name = "Soldier" + i;
                 soldier.transform.position = Map.center[i];
                 soldiers.Add(soldier);

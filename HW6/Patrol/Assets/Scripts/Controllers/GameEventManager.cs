@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace Patrol
 {
     public class GameEventManager

@@ -2,11 +2,11 @@
 
 namespace Patrol
 {
-    public class PlayerCollider : MonoBehaviour
+    public class SoldierCollider : MonoBehaviour
     {
-        public void OnTriggerEnter(Collider collider)
+        public void OnCollisionEnter(Collision collision)
         {
-            if (collider.gameObject.tag == "Player")
+            if (collision.gameObject.tag == "Player")
             {
                 GameEventManager.GetInstance().PlayerCollideWithPatrol();
             }

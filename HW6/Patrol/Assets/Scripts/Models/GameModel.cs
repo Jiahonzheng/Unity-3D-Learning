@@ -1,4 +1,6 @@
-﻿namespace Patrol
+﻿using System;
+
+namespace Patrol
 {
     public enum GameState
     {
