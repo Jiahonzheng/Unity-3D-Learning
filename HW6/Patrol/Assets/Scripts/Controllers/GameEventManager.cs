@@ -8,8 +8,8 @@ namespace Patrol
         public delegate void OnPlayerEnterArea(int area);
         public static event OnPlayerEnterArea onPlayerEnterArea;
 
-        public delegate void OnPlayerCollideWithPatrol();
-        public static event OnPlayerCollideWithPatrol onPlayerCollideWithPatrol;
+        public delegate void OnSoldierCollideWithPlayer();
+        public static event OnSoldierCollideWithPlayer onSoldierCollideWithPlayer;
 
         public static GameEventManager GetInstance()
         {
@@ -21,9 +21,9 @@ namespace Patrol
             onPlayerEnterArea?.Invoke(area);
         }
 
-        public void PlayerCollideWithPatrol()
+        public void SoldierCollideWithPlayer()
         {
-            onPlayerCollideWithPatrol?.Invoke();
+            onSoldierCollideWithPlayer?.Invoke();
         }
     }
 }

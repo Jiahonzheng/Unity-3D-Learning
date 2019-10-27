@@ -13,14 +13,14 @@ namespace Patrol
         // 地图 9 个区域的中心点位置。
         public static Vector3[] center = new Vector3[] { new Vector3(-10, 0, -10), new Vector3(0, 0, -10), new Vector3(10, 0, -10), new Vector3(-10, 0, 0), new Vector3(0, 0, 0), new Vector3(10, 0, 0), new Vector3(-10, 0, 10), new Vector3(0, 0, 10), new Vector3(10, 0, 10) };
 
-        // 设置地图平面。
+        // 构造地图平面。
         public static void LoadPlane()
         {
             GameObject map = Instantiate(planePrefab);
         }
 
-        // 设置地图边界篱笆。
-        public static void LoadWalls()
+        // 构造地图边界篱笆。
+        public static void LoadBoundaries()
         {
             for (int i = 0; i < 12; ++i)
             {
@@ -46,7 +46,7 @@ namespace Patrol
             }
         }
 
-        // 设置篱笆。
+        // 构造内部篱笆。
         public static void LoadFences()
         {
             var row = new int[2, 12] { { 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1 }, { 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0 } };
@@ -76,7 +76,7 @@ namespace Patrol
             }
         }
 
-        // 设置区域Collider。
+        // 构造区域Collider。
         public static void LoadAreaColliders()
         {
             for (int i = 0; i < 9; ++i)

@@ -23,7 +23,7 @@ namespace Patrol
         public override void Update()
         {
             transform.position = Vector3.MoveTowards(transform.position, target.transform.position, 1.5f * speed * Time.deltaTime);
-            if (gameObject.GetComponent<Patrol>().isFollowing == false || (gameObject.transform.position - target.transform.position).sqrMagnitude < 0.00001f)
+            if (gameObject.GetComponent<Soldier>().isFollowing == false || (gameObject.transform.position - target.transform.position).sqrMagnitude < 0.00001f)
             {
                 destroy = true;
                 callback.ActionDone(this);

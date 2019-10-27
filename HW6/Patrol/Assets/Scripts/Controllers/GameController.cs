@@ -3,10 +3,17 @@ using UnityEngine;
 
 namespace Patrol
 {
-    public class GameController : MonoBehaviour, ISceneController
+    public interface IUserAction
+    {
+        void Restart();
+    }
+
+    public class GameController : MonoBehaviour, ISceneController, IUserAction
     {
         public GameModel model = new GameModel();
+        public GameGUI view;
 
+        private GameEventManager eventManager = GameEventManager.GetInstance();
         private GameActionManager actionManager;
         private GameObject player;
         private List<GameObject> soldiers = new List<GameObject>();
@@ -14,7 +21,16 @@ namespace Patrol
 
         void Awake()
         {
+            model.onRefresh += delegate
+            {
+                view.state = model.state;
+                view.score = model.score;
+            };
+            view = gameObject.AddComponent<GameGUI>();
             actionManager = gameObject.AddComponent<GameActionManager>();
+            // 设置游戏事件及其处理函数。
+            GameEventManager.onPlayerEnterArea += OnPlayerEnterArea;
+            GameEventManager.onSoldierCollideWithPlayer += OnSoldierCollideWithPlayer;
             Director.GetInstance().OnSceneWake(this);
         }
 
@@ -37,70 +53,83 @@ namespace Patrol
             }
         }
 
-        void OnEnable()
-        {
-            GameEventManager.onPlayerEnterArea += OnPlayerEnterArea;
-            GameEventManager.onPlayerCollideWithPatrol += OnPlayerCollideWithPatrol;
-        }
-
         public void LoadResources()
         {
+            // 构造平面。
             Map.LoadPlane();
-            Map.LoadWalls();
+            // 构造边界篱笆。
+            Map.LoadBoundaries();
+            // 构造内部篱笆。
             Map.LoadFences();
+            // 构造区域Collider 。
             Map.LoadAreaColliders();
+            // 构造巡逻兵。
             LoadSoldiers();
+            // 构造玩家。
             LoadPlayer();
-            Restart();
+
+            // Restart();
         }
 
         public void Restart()
         {
+            // 重置 Model 。
+            model.Reset();
+            // 重置初始玩家区域。
             currentArea = 4;
-            model.state = GameState.RUNNING;
+            // 重置玩家位置和动画状态。
             player.transform.position = new Vector3(-4.5f, 0, -4.5f);
+            player.transform.rotation = Quaternion.AngleAxis(0, Vector3.up);
             player.GetComponent<Animator>().Play("Initial State");
-            foreach (var p in soldiers)
+            // 重置巡逻兵位置和动画状态。
+            for (int i = 0; i < 9; ++i)
             {
-                if (p.GetComponent<Patrol>().area != currentArea)
+                soldiers[i].transform.position = Map.center[i];
+                if (soldiers[i].GetComponent<Soldier>().area != currentArea)
                 {
-                    p.GetComponent<Patrol>().isFollowing = false;
-                    actionManager.GoAround(p);
+                    soldiers[i].GetComponent<Soldier>().isFollowing = false;
+                    actionManager.GoAround(soldiers[i]);
                 }
                 else
                 {
-                    p.GetComponent<Patrol>().isFollowing = true;
-                    actionManager.Trace(p, player);
+                    soldiers[i].GetComponent<Soldier>().isFollowing = true;
+                    actionManager.Trace(soldiers[i], player);
                 }
             }
         }
 
+        // 当玩家摆脱一位巡逻兵，进入新区域时。
         private void OnPlayerEnterArea(int area)
         {
             if (currentArea != area)
             {
-                soldiers[currentArea].GetComponent<Patrol>().isFollowing = false;
+                // 更新分数。
+                model.AddScore(1);
+                soldiers[currentArea].GetComponent<Soldier>().isFollowing = false;
                 currentArea = area;
-                soldiers[currentArea].GetComponent<Patrol>().isFollowing = true;
+                soldiers[currentArea].GetComponent<Soldier>().isFollowing = true;
                 actionManager.Trace(soldiers[currentArea], player);
             }
         }
 
-        private void OnPlayerCollideWithPatrol()
+        // 当巡逻兵与玩家碰撞时。
+        private void OnSoldierCollideWithPlayer()
         {
             model.state = GameState.LOSE;
-            soldiers[currentArea].GetComponent<Patrol>().isFollowing = false;
             player.GetComponent<Rigidbody>().isKinematic = true;
             player.GetComponent<Animator>().SetTrigger("isDead");
+            soldiers[currentArea].GetComponent<Soldier>().isFollowing = false;
+            model.Reset(GameState.LOSE);
         }
 
+        // 构造巡逻兵。
         private void LoadSoldiers()
         {
             GameObject soldierPrefab = Resources.Load<GameObject>("Prefabs/Soldier");
             for (int i = 0; i < 9; ++i)
             {
                 GameObject soldier = Instantiate(soldierPrefab);
-                soldier.AddComponent<Patrol>().area = i;
+                soldier.AddComponent<Soldier>().area = i;
                 soldier.GetComponent<Animator>().SetBool("isRunning", true);
                 soldier.GetComponent<Rigidbody>().freezeRotation = true;
                 soldier.AddComponent<SoldierCollider>();
@@ -110,18 +139,12 @@ namespace Patrol
             }
         }
 
+        // 构造玩家。
         private void LoadPlayer()
         {
             player = Instantiate(Resources.Load<GameObject>("Prefabs/Player"));
             player.GetComponent<Rigidbody>().freezeRotation = true;
-        }
-
-        private void ResetSoldiers()
-        {
-            for (int i = 0; i < 9; ++i)
-            {
-                soldiers[i].transform.position = Map.center[i];
-            }
+            player.transform.position = new Vector3(-4.5f, 0, -4.5f);
         }
     }
 }
