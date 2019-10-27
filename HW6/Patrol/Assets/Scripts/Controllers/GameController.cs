@@ -9,11 +9,12 @@ namespace Patrol
         private GameActionManager actionManager;
         private GameObject player;
         private List<GameObject> soldiers = new List<GameObject>();
+        private int currentArea = 4;
 
         void Awake()
         {
-            Director.GetInstance().OnSceneWake(this);
             actionManager = gameObject.AddComponent<GameActionManager>();
+            Director.GetInstance().OnSceneWake(this);
         }
 
         void Update()
@@ -30,11 +31,23 @@ namespace Patrol
             LoadSoldiers();
             player = Instantiate(Resources.Load<GameObject>("Prefabs/Player"));
             player.transform.position = new Vector3(-4.5f, 0, -4.5f);
+            Restart();
         }
 
         public void Restart()
         {
-            player.GetComponent<Animator>().Play("New State");
+            player.GetComponent<Animator>().Play("Initial State");
+            foreach (var p in soldiers)
+            {
+                if (p.GetComponent<Patrol>().area != currentArea)
+                {
+                    actionManager.GoAround(p);
+                }
+                else
+                {
+                    // actionManager.Trace(p, player);
+                }
+            }
         }
 
         public void MovePlayer()
