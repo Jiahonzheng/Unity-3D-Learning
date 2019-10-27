@@ -20,6 +20,19 @@ namespace Patrol
         void Update()
         {
             MovePlayer();
+            if (player.transform.localEulerAngles.x != 0 || player.transform.localEulerAngles.z != 0)
+            {
+                player.transform.localEulerAngles = new Vector3(0, player.transform.localEulerAngles.y, 0);
+            }
+            if (player.transform.position.y <= 0)
+            {
+                player.transform.position = new Vector3(player.transform.position.x, 0, player.transform.position.z);
+            }
+        }
+
+        void OnEnable()
+        {
+            GameEventManager.onPlayerEnterArea += OnPlayerEnterArea;
         }
 
         public void LoadResources()
@@ -41,11 +54,13 @@ namespace Patrol
             {
                 if (p.GetComponent<Patrol>().area != currentArea)
                 {
+                    p.GetComponent<Patrol>().isFollowing = false;
                     actionManager.GoAround(p);
                 }
                 else
                 {
-                    // actionManager.Trace(p, player);
+                    p.GetComponent<Patrol>().isFollowing = true;
+                    actionManager.Trace(p, player);
                 }
             }
         }
@@ -67,6 +82,17 @@ namespace Patrol
             player.transform.Rotate(0, dx * 50f * Time.deltaTime, 0);
         }
 
+        private void OnPlayerEnterArea(int area)
+        {
+            if (currentArea != area)
+            {
+                soldiers[currentArea].GetComponent<Patrol>().isFollowing = false;
+                currentArea = area;
+                soldiers[currentArea].GetComponent<Patrol>().isFollowing = true;
+                actionManager.Trace(soldiers[currentArea], player);
+            }
+        }
+
         private void LoadSoldiers()
         {
             GameObject soldierPrefab = Resources.Load<GameObject>("Prefabs/Soldier");
@@ -74,6 +100,7 @@ namespace Patrol
             {
                 GameObject soldier = Instantiate(soldierPrefab);
                 soldier.AddComponent<Patrol>().area = i;
+                soldier.GetComponent<Animator>().SetBool("isRunning", true);
                 soldier.name = "Soldier" + i;
                 soldier.transform.position = Map.center[i];
                 soldiers.Add(soldier);

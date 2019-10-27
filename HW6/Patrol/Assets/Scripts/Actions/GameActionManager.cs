@@ -14,7 +14,7 @@ namespace Patrol
             {
                 moveToActions[area].destroy = true;
             }
-            TraceAction action = TraceAction.GetAction(patrol, this, player, 0.8f);
+            TraceAction action = TraceAction.GetAction(patrol, this, player, 1.3f);
             AddAction(action);
         }
 
@@ -22,7 +22,7 @@ namespace Patrol
         {
             var target = GetGoAroundTarget(patrol);
             var area = patrol.GetComponent<Patrol>().area;
-            MoveToAction action = MoveToAction.GetAction(patrol, this, target, 0.6f, area);
+            MoveToAction action = MoveToAction.GetAction(patrol, this, target, 0.8f, area);
             AddAction(action);
         }
 
@@ -42,6 +42,7 @@ namespace Patrol
             {
                 moveToActions.Remove(area);
             }
+            GoAround(action.gameObject);
         }
 
         private Vector3 GetGoAroundTarget(GameObject patrol)
@@ -54,7 +55,7 @@ namespace Patrol
             float z_up = z_down + 10;
             var move = new Vector3(Random.Range(-2, 2), 0, Random.Range(-2, 2));
             var next = pos + move;
-            while (!(next.x > x_down && next.x < x_up && next.z > z_down && next.z < z_up))
+            while (!(next.x > x_down + 0.1f && next.x < x_up - 0.1f && next.z > z_down + 0.1f && next.z < z_up - 0.1f))
             {
                 move = new Vector3(Random.Range(-2, 2), 0, Random.Range(-2, 2));
                 next = pos + move;

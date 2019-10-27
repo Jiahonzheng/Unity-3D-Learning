@@ -79,24 +79,8 @@ namespace Patrol
                 GameObject collider = Instantiate(areaColliderPrefab);
                 collider.name = "AreaCollider" + i;
                 collider.transform.position = center[i];
+                collider.AddComponent<AreaCollider>().area = i;
             }
-            // int row = 0;
-            // int col = -1;
-            // for (int i = 0; i < 9; ++i)
-            // {
-            //     if (i == 3 || i == 6)
-            //     {
-            //         row++;
-            //         col = 0;
-            //     }
-            //     else
-            //     {
-            //         col++;
-            //     }
-            //     GameObject collider = Instantiate(areaColliderPrefab);
-            //     collider.name = "AreaCollider" + i;
-            //     collider.transform.position = new Vector3(-10 + 10 * col, 0, -10 + 10 * row);
-            // }
         }
     }
 }

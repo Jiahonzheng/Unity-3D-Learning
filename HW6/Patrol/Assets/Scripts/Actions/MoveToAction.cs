@@ -28,7 +28,7 @@ namespace Patrol
 
         public override void Update()
         {
-            if (transform.position == target)
+            if ((transform.position - target).magnitude < 0.01)
             {
                 destroy = true;
                 callback.ActionDone(this);
