@@ -6,6 +6,7 @@ namespace Patrol
     public class GameActionManager : ActionManager, IActionCallback
     {
         private int currentArea = -1;
+        // 存储自主巡逻动作。
         Dictionary<int, MoveToAction> moveToActions = new Dictionary<int, MoveToAction>();
 
         // 巡逻兵追随玩家。
@@ -30,16 +31,19 @@ namespace Patrol
         public void GoAround(GameObject patrol)
         {
             var area = patrol.GetComponent<Soldier>().area;
+            // 防止重入。
             if (moveToActions.ContainsKey(area))
             {
                 return;
             }
+            // 计算下一巡逻目的地。
             var target = GetGoAroundTarget(patrol);
             MoveToAction action = MoveToAction.GetAction(patrol, this, target, 1.5f, area);
             moveToActions.Add(area, action);
             AddAction(action);
         }
 
+        // 停止所有动画。
         public void Stop()
         {
             foreach (var x in moveToActions.Values)
@@ -47,6 +51,7 @@ namespace Patrol
                 x.destroy = true;
             }
             moveToActions.Clear();
+            // 重置当前区域号。
             currentArea = -1;
         }
 
@@ -59,6 +64,7 @@ namespace Patrol
             }
         }
 
+        // 计算下一巡逻目的地。
         private Vector3 GetGoAroundTarget(GameObject patrol)
         {
             Vector3 pos = patrol.transform.position;

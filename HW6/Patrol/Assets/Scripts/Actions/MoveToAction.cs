@@ -22,6 +22,7 @@ namespace Patrol
 
         public override void Start()
         {
+            // ±‹√‚µØ≥ˆ Zero Ã· æ°£
             if (target - gameObject.transform.position == Vector3.zero)
             {
                 return;

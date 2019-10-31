@@ -120,6 +120,7 @@ namespace Patrol
             {
                 // 更新分数。
                 model.AddScore(1);
+                // 设置追随玩家的巡逻兵。
                 soldiers[currentArea].GetComponent<Soldier>().isFollowing = false;
                 currentArea = area;
                 soldiers[currentArea].GetComponent<Soldier>().isFollowing = true;
@@ -131,9 +132,11 @@ namespace Patrol
         private void OnSoldierCollideWithPlayer()
         {
             view.state = model.state = GameState.LOSE;
+            // 设置玩家的“死亡”动画。
             player.GetComponent<Animator>().SetTrigger("isDead");
             player.GetComponent<Rigidbody>().isKinematic = true;
             soldiers[currentArea].GetComponent<Soldier>().isFollowing = false;
+            // 取消所有巡逻兵的动画。
             actionManager.Stop();
             for (int i = 0; i < 9; ++i)
             {
@@ -150,6 +153,7 @@ namespace Patrol
                 GameObject soldier = Instantiate(soldierPrefab);
                 soldier.AddComponent<Soldier>().area = i;
                 soldier.GetComponent<Rigidbody>().freezeRotation = true;
+                // 添加碰撞检测脚本。
                 soldier.AddComponent<SoldierCollider>();
                 soldier.name = "Soldier" + i;
                 soldier.transform.position = Map.center[i];

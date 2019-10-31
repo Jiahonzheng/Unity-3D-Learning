@@ -49,6 +49,7 @@ namespace Patrol
         // 构造内部篱笆。
         public static void LoadFences()
         {
+            //  为 0 表示通道，为 1 表示篱笆。
             var row = new int[2, 12] { { 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1 }, { 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0 } };
             var col = new int[2, 12] { { 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1 }, { 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0 } };
             for (int i = 0; i < 2; ++i)
@@ -84,6 +85,7 @@ namespace Patrol
                 GameObject collider = Instantiate(areaColliderPrefab);
                 collider.name = "AreaCollider" + i;
                 collider.transform.position = center[i];
+                // 添加区域检测脚本。
                 collider.AddComponent<AreaCollider>().area = i;
             }
         }
