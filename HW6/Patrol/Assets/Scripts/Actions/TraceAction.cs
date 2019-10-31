@@ -18,7 +18,7 @@ namespace Patrol
             return action;
         }
 
-        public override void Start() {}
+        public override void Start() { }
 
         public override void Update()
         {

@@ -5,12 +5,19 @@ namespace Patrol
 {
     public class GameActionManager : ActionManager, IActionCallback
     {
+        private int currentArea = -1;
         Dictionary<int, MoveToAction> moveToActions = new Dictionary<int, MoveToAction>();
 
         // 巡逻兵追随玩家。
         public void Trace(GameObject patrol, GameObject player)
         {
             var area = patrol.GetComponent<Soldier>().area;
+            // 防止重入。
+            if (area == currentArea)
+            {
+                return;
+            }
+            currentArea = area;
             if (moveToActions.ContainsKey(area))
             {
                 moveToActions[area].destroy = true;
@@ -29,8 +36,6 @@ namespace Patrol
             }
             var target = GetGoAroundTarget(patrol);
             MoveToAction action = MoveToAction.GetAction(patrol, this, target, 1.5f, area);
-            patrol.GetComponent<Animator>().Play("Initial State");
-            patrol.GetComponent<Animator>().SetBool("isRunning", true);
             moveToActions.Add(area, action);
             AddAction(action);
         }
@@ -42,6 +47,7 @@ namespace Patrol
                 x.destroy = true;
             }
             moveToActions.Clear();
+            currentArea = -1;
         }
 
         public new void ActionDone(Action action)
@@ -51,7 +57,6 @@ namespace Patrol
             {
                 moveToActions.Remove(area);
             }
-            action.gameObject.GetComponent<Animator>().SetBool("isRunning", false);
         }
 
         private Vector3 GetGoAroundTarget(GameObject patrol)

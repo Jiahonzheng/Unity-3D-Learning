@@ -40,6 +40,7 @@ namespace Patrol
             {
                 var dx = Input.GetAxis("Horizontal");
                 var dz = Input.GetAxis("Vertical");
+                // 设置人物的运动动画。
                 if (dx != 0 || dz != 0)
                 {
                     player.GetComponent<Animator>().SetBool("isRunning", true);
@@ -48,14 +49,23 @@ namespace Patrol
                 {
                     player.GetComponent<Animator>().SetBool("isRunning", false);
                 }
+                // 移动人物。
                 player.transform.Translate(0, 0, dz * 4f * Time.deltaTime);
-                player.transform.Rotate(0, dx * 50f * Time.deltaTime, 0);
+                // 转动人物。
+                player.transform.Rotate(0, dx * 80f * Time.deltaTime, 0);
 
+                // 设置巡逻兵动作类型。
                 for (int i = 0; i < 9; ++i)
                 {
+                    // 不在当前区域的巡逻兵进行自主巡逻。
                     if (i != currentArea)
                     {
                         actionManager.GoAround(soldiers[i]);
+                    }
+                    else // 在当前区域的巡逻兵对玩家进行追随。
+                    {
+                        soldiers[i].GetComponent<Soldier>().isFollowing = true;
+                        actionManager.Trace(soldiers[i], player);
                     }
                 }
             }
@@ -75,8 +85,6 @@ namespace Patrol
             LoadSoldiers();
             // 构造玩家。
             LoadPlayer();
-
-            // Restart();
         }
 
         public void Restart()
@@ -96,22 +104,18 @@ namespace Patrol
                 soldiers[i].GetComponent<Animator>().Play("Initial State");
                 soldiers[i].GetComponent<Animator>().SetBool("isRunning", true);
                 soldiers[i].transform.position = Map.center[i];
-                if (soldiers[i].GetComponent<Soldier>().area != currentArea)
-                {
-                    soldiers[i].GetComponent<Soldier>().isFollowing = false;
-                    actionManager.GoAround(soldiers[i]);
-                }
-                else
-                {
-                    soldiers[i].GetComponent<Soldier>().isFollowing = true;
-                    actionManager.Trace(soldiers[i], player);
-                }
+                soldiers[i].GetComponent<Soldier>().isFollowing = false;
+                actionManager.GoAround(soldiers[i]);
             }
         }
 
         // 当玩家摆脱一位巡逻兵，进入新区域时。
         private void OnPlayerEnterArea(int area)
         {
+            if (model.state != GameState.RUNNING)
+            {
+                return;
+            }
             if (currentArea != area)
             {
                 // 更新分数。
@@ -126,11 +130,10 @@ namespace Patrol
         // 当巡逻兵与玩家碰撞时。
         private void OnSoldierCollideWithPlayer()
         {
-            model.state = GameState.LOSE;
+            view.state = model.state = GameState.LOSE;
             player.GetComponent<Animator>().SetTrigger("isDead");
             player.GetComponent<Rigidbody>().isKinematic = true;
             soldiers[currentArea].GetComponent<Soldier>().isFollowing = false;
-            model.Reset(GameState.LOSE);
             actionManager.Stop();
             for (int i = 0; i < 9; ++i)
             {

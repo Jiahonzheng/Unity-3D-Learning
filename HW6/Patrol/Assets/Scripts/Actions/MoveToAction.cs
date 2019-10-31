@@ -22,7 +22,8 @@ namespace Patrol
 
         public override void Start()
         {
-            if (target - gameObject.transform.position == Vector3.zero) {
+            if (target - gameObject.transform.position == Vector3.zero)
+            {
                 return;
             }
             Quaternion rotation = Quaternion.LookRotation(target - gameObject.transform.position, Vector3.up);
@@ -37,7 +38,7 @@ namespace Patrol
                 callback.ActionDone(this);
             }
             else
-            {  
+            {
                 gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, target, speed * Time.deltaTime);
             }
         }
