@@ -18,11 +18,11 @@ namespace Patrol
             return action;
         }
 
-        public override void Start() { }
+        public override void Start() {}
 
         public override void Update()
         {
-            transform.position = Vector3.MoveTowards(transform.position, target.transform.position, 1.5f * speed * Time.deltaTime);
+            gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, target.transform.position, 1.5f * speed * Time.deltaTime);
             if (gameObject.GetComponent<Soldier>().isFollowing == false || (gameObject.transform.position - target.transform.position).sqrMagnitude < 0.00001f)
             {
                 destroy = true;

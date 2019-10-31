@@ -22,13 +22,20 @@ namespace Patrol
         // 巡逻兵自主巡逻。
         public void GoAround(GameObject patrol)
         {
-            var target = GetGoAroundTarget(patrol);
             var area = patrol.GetComponent<Soldier>().area;
+            if (moveToActions.ContainsKey(area))
+            {
+                return;
+            }
+            var target = GetGoAroundTarget(patrol);
             MoveToAction action = MoveToAction.GetAction(patrol, this, target, 1.5f, area);
+            patrol.GetComponent<Animator>().Play("Initial State");
+            patrol.GetComponent<Animator>().SetBool("isRunning", true);
+            moveToActions.Add(area, action);
             AddAction(action);
         }
 
-        public void ParticleSystemStopAction()
+        public void Stop()
         {
             foreach (var x in moveToActions.Values)
             {
@@ -44,7 +51,7 @@ namespace Patrol
             {
                 moveToActions.Remove(area);
             }
-            GoAround(action.gameObject);
+            action.gameObject.GetComponent<Animator>().SetBool("isRunning", false);
         }
 
         private Vector3 GetGoAroundTarget(GameObject patrol)
@@ -61,14 +68,14 @@ namespace Patrol
             var next = pos + move;
             int tryCount = 0;
             // 边界判断。
-            while (!(next.x > x_down + 0.1f && next.x < x_up - 0.1f && next.z > z_down + 0.1f && next.z < z_up - 0.1f))
+            while (!(next.x > x_down + 0.1f && next.x < x_up - 0.1f && next.z > z_down + 0.1f && next.z < z_up - 0.1f) || next == pos)
             {
-                move = new Vector3(Random.Range(-1, 1), 0, Random.Range(-1, 1));
+                move = new Vector3(Random.Range(-1.5f, 1.5f), 0, Random.Range(-1.5f, 1.5f));
                 next = pos + move;
                 // 当无法获取到符合要求的 target 时，抛出异常。
                 if ((++tryCount) > 100)
                 {
-                    Debug.LogFormat("point {0},area({1}, {2}, {3}, {4})", pos, x_down, x_up, z_down, z_up);
+                    Debug.LogFormat("point {0}, area({1}, {2}, {3}, {4}, {5})", pos, area, x_down, x_up, z_down, z_up);
                     throw new System.Exception("Too many loops for finding a target");
                 }
             }

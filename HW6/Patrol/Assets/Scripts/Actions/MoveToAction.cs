@@ -22,20 +22,23 @@ namespace Patrol
 
         public override void Start()
         {
-            Quaternion rotation = Quaternion.LookRotation(target - transform.position, Vector3.up);
-            transform.rotation = rotation;
+            if (target - gameObject.transform.position == Vector3.zero) {
+                return;
+            }
+            Quaternion rotation = Quaternion.LookRotation(target - gameObject.transform.position, Vector3.up);
+            gameObject.transform.rotation = rotation;
         }
 
         public override void Update()
         {
-            if ((transform.position - target).magnitude < 0.001f)
+            if ((gameObject.transform.position - target).magnitude < 0.001f)
             {
                 destroy = true;
                 callback.ActionDone(this);
             }
             else
-            {
-                transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+            {  
+                gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, target, speed * Time.deltaTime);
             }
         }
     }

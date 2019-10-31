@@ -50,6 +50,14 @@ namespace Patrol
                 }
                 player.transform.Translate(0, 0, dz * 4f * Time.deltaTime);
                 player.transform.Rotate(0, dx * 50f * Time.deltaTime, 0);
+
+                for (int i = 0; i < 9; ++i)
+                {
+                    if (i != currentArea)
+                    {
+                        actionManager.GoAround(soldiers[i]);
+                    }
+                }
             }
         }
 
@@ -79,11 +87,14 @@ namespace Patrol
             currentArea = 4;
             // 重置玩家位置和动画状态。
             player.transform.position = new Vector3(-4.5f, 0, -4.5f);
+            player.GetComponent<Rigidbody>().isKinematic = false;
             player.transform.rotation = Quaternion.AngleAxis(0, Vector3.up);
             player.GetComponent<Animator>().Play("Initial State");
             // 重置巡逻兵位置和动画状态。
             for (int i = 0; i < 9; ++i)
             {
+                soldiers[i].GetComponent<Animator>().Play("Initial State");
+                soldiers[i].GetComponent<Animator>().SetBool("isRunning", true);
                 soldiers[i].transform.position = Map.center[i];
                 if (soldiers[i].GetComponent<Soldier>().area != currentArea)
                 {
@@ -116,10 +127,15 @@ namespace Patrol
         private void OnSoldierCollideWithPlayer()
         {
             model.state = GameState.LOSE;
-            player.GetComponent<Rigidbody>().isKinematic = true;
             player.GetComponent<Animator>().SetTrigger("isDead");
+            player.GetComponent<Rigidbody>().isKinematic = true;
             soldiers[currentArea].GetComponent<Soldier>().isFollowing = false;
             model.Reset(GameState.LOSE);
+            actionManager.Stop();
+            for (int i = 0; i < 9; ++i)
+            {
+                soldiers[i].GetComponent<Animator>().SetBool("isRunning", false);
+            }
         }
 
         // 构造巡逻兵。
@@ -130,7 +146,6 @@ namespace Patrol
             {
                 GameObject soldier = Instantiate(soldierPrefab);
                 soldier.AddComponent<Soldier>().area = i;
-                soldier.GetComponent<Animator>().SetBool("isRunning", true);
                 soldier.GetComponent<Rigidbody>().freezeRotation = true;
                 soldier.AddComponent<SoldierCollider>();
                 soldier.name = "Soldier" + i;
