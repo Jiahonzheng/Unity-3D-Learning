@@ -7198,7 +7198,7 @@ PrefabInstance:
     - target: {fileID: 2020737344733345956, guid: edcc3ee40bb579c438817bb354a95ca0,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.98
+      value: -0.85
       objectReference: {fileID: 0}
     - target: {fileID: 2020737344733345956, guid: edcc3ee40bb579c438817bb354a95ca0,
         type: 3}
@@ -7273,7 +7273,7 @@ PrefabInstance:
     - target: {fileID: 2020737344733345956, guid: edcc3ee40bb579c438817bb354a95ca0,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.98
+      value: 0.85
       objectReference: {fileID: 0}
     - target: {fileID: 2020737344733345956, guid: edcc3ee40bb579c438817bb354a95ca0,
         type: 3}
@@ -7324,6 +7324,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2020737344714997220, guid: edcc3ee40bb579c438817bb354a95ca0,
+        type: 3}
+      propertyPath: ForceModule.inWorldSpace
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: edcc3ee40bb579c438817bb354a95ca0, type: 3}

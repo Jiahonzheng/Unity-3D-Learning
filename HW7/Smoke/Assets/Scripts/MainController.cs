@@ -33,7 +33,6 @@ namespace Smoke
             {
                 car.GetComponent<CarCollider>().SetDamage(200);
             }
-
         }
 
         // 装载地图资源。

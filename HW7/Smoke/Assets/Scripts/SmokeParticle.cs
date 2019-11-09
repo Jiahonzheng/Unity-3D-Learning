@@ -32,7 +32,7 @@ namespace Smoke
         {
             // 比例系数。
             var K = 5000;
-            // 注意：若使用 exhaust.emission.rateOverTime = K * carController.Revs + 60; 会返回语法错误。
+            // 注意：若使用 exhaust.emission.rateOverTime = K * carController.Revs; 会返回语法错误。
             var emission = exhaust.emission;
             emission.rateOverTime = K * carController.Revs;
         }
