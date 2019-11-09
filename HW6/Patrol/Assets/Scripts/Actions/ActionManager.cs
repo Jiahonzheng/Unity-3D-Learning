@@ -8,7 +8,7 @@ namespace Patrol
         // 存储所有动作。
         private Dictionary<int, Action> actions = new Dictionary<int, Action>();
         private List<Action> waitToAdd = new List<Action>();
-        private List<int> waitToDelete = new List<int>();
+        private HashSet<int> waitToDelete = new HashSet<int>();
 
         protected void Update()
         {

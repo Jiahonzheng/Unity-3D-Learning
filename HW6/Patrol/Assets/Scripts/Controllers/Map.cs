@@ -1,23 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Patrol
 {
     class Map : Object
     {
+        // 地图平面预制。
         private static GameObject planePrefab = Resources.Load<GameObject>("Prefabs/Plane");
+        // 篱笆预制。
         private static GameObject fencePrefab = Resources.Load<GameObject>("Prefabs/Fence");
+        // 区域Collider预制。
         private static GameObject areaColliderPrefab = Resources.Load<GameObject>("Prefabs/AreaCollider");
-
+        // 地图 9 个区域的中心点位置。
         public static Vector3[] center = new Vector3[] { new Vector3(-10, 0, -10), new Vector3(0, 0, -10), new Vector3(10, 0, -10), new Vector3(-10, 0, 0), new Vector3(0, 0, 0), new Vector3(10, 0, 0), new Vector3(-10, 0, 10), new Vector3(0, 0, 10), new Vector3(10, 0, 10) };
 
+        // 构造地图平面。
         public static void LoadPlane()
         {
             GameObject map = Instantiate(planePrefab);
         }
 
-        public static void LoadWalls()
+        // 构造地图边界篱笆。
+        public static void LoadBoundaries()
         {
             for (int i = 0; i < 12; ++i)
             {
@@ -43,8 +46,10 @@ namespace Patrol
             }
         }
 
+        // 构造内部篱笆。
         public static void LoadFences()
         {
+            //  为 0 表示通道，为 1 表示篱笆。
             var row = new int[2, 12] { { 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1 }, { 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0 } };
             var col = new int[2, 12] { { 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1 }, { 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0 } };
             for (int i = 0; i < 2; ++i)
@@ -72,6 +77,7 @@ namespace Patrol
             }
         }
 
+        // 构造区域Collider。
         public static void LoadAreaColliders()
         {
             for (int i = 0; i < 9; ++i)
@@ -79,24 +85,9 @@ namespace Patrol
                 GameObject collider = Instantiate(areaColliderPrefab);
                 collider.name = "AreaCollider" + i;
                 collider.transform.position = center[i];
+                // 添加区域检测脚本。
+                collider.AddComponent<AreaCollider>().area = i;
             }
-            // int row = 0;
-            // int col = -1;
-            // for (int i = 0; i < 9; ++i)
-            // {
-            //     if (i == 3 || i == 6)
-            //     {
-            //         row++;
-            //         col = 0;
-            //     }
-            //     else
-            //     {
-            //         col++;
-            //     }
-            //     GameObject collider = Instantiate(areaColliderPrefab);
-            //     collider.name = "AreaCollider" + i;
-            //     collider.transform.position = new Vector3(-10 + 10 * col, 0, -10 + 10 * row);
-            // }
         }
     }
 }
