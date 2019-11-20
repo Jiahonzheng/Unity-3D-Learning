@@ -1,5 +1,7 @@
 # UI 系统：公告牌
 
+博客链接：[Unity 公告牌](https://blog.jiahonzheng.cn/2019/11/21/Unity 实现公告牌/)
+
 ## 设计要求
 
 + 使用 UGUI 技术实现**公告牌**。
