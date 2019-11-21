@@ -94,6 +94,108 @@ public class ButtonHandler : MonoBehaviour
 
 在 `OnClick` 函数中，我们根据当前 Text 消息主体的 `IsActive` 属性，来实现列表项的展开或关闭效果。
 
+## 添加动画
+
+为了实现列表展开和关闭的动画效果，我们需要在 `Start` 函数中获取 Text 的宽度和高度。
+
+```csharp
+void Start()
+{
+    // 绑定响应点击事件。
+    GetComponent<Button>().onClick.AddListener(OnClick);
+    // 记录消息主体 Text 的高度。
+    textHeight = text.rectTransform.sizeDelta.y;
+    // 记录消息主体 Text 的宽度。
+    textWidth = text.rectTransform.sizeDelta.x;
+}
+```
+
+我们使用**协程**实现动画效果，在 `CloseText` 函数中实现列表项的关闭动画，在 `OpenText` 函数中实现列表项的展开动画。
+
+在 `CloseText` 函数中，我们先计算出 Text 高度的缩放速度，随后使用 `for` 循环实现动画的**帧绘制**逻辑。在每一帧中，我们更新当前旋转角度和 Text 高度，最后在动画结束时，我们设置 Text 对象为**不可用**状态。
+
+```csharp
+// 播放关闭消息主体动画。
+private IEnumerator CloseText()
+{
+    // 设置旋转角度的初始值和旋转速度。
+    float angleX = 0;
+    float angleSpeed = 90f / frame;
+    // 设置 Text 初始高度和高度缩放速度。
+    float height = textHeight;
+    float heightSpeed = textHeight / frame;
+
+    // 执行动画。
+    for (int i = 0; i < frame; ++i)
+    {
+        // 更新旋转角度。
+        angleX -= angleSpeed;
+        // 更新 Text 高度。
+        height -= heightSpeed;
+        // 应用新的旋转角度和高度。
+        text.transform.rotation = Quaternion.Euler(angleX, 0, 0);
+        text.rectTransform.sizeDelta = new Vector2(textWidth, height);
+        // 结束动画。
+        if (i == frame - 1)
+        {
+            text.gameObject.SetActive(false);
+        }
+        yield return null;
+    }
+}
+```
+
+函数 `OpenText` 的执行逻辑与函数 `CloseText` 逻辑相似，这里不做过多阐述，其具体代码如下。
+
+```csharp
+// 播放打开消息主体动画。
+private IEnumerator OpenText()
+{
+    // 设置旋转的初始值和旋转速度。
+    float angleX = -90f;
+    float angleSpeed = 90f / frame;
+    // 设置 Text 初始高度和高度缩放速度。
+    float height = 0;
+    float heightSpeed = textHeight / frame;
+
+    // 执行动画。
+    for (int i = 0; i < frame; ++i)
+    {
+        // 更新旋转角度。
+        angleX += angleSpeed;
+        // 更新 Text 高度。
+        height += heightSpeed;
+        // 应用新的旋转角度和高度。
+        text.transform.rotation = Quaternion.Euler(angleX, 0, 0);
+        text.rectTransform.sizeDelta = new Vector2(textWidth, height);
+        // 结束动画。
+        if (i == 0)
+        {
+            text.gameObject.SetActive(true);
+        }
+        yield return null;
+    }
+}
+```
+
+最后，我们需要更新 `OnClick` 函数的执行逻辑。
+
+```csharp
+// 响应点击事件。
+void OnClick()
+{
+    // 当消息主体已被展开，播放关闭动画。
+    if (text.gameObject.activeSelf)
+    {
+        StartCoroutine("CloseText");
+    }
+    else // 当消息主体未被展开，播放展开动画。
+    {
+        StartCoroutine("OpenText");
+    }
+}
+```
+
 ## 实现代码
 
 由于篇幅限制，具体实现代码可参照 GitHub 链接：[github.com/Jiahonzheng/Unity-3D-Learning](https://github.com/Jiahonzheng/Unity-3D-Learning/tree/HW8/HW8) 。
