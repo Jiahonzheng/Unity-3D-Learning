@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 
 namespace PriestsAndDevils
 {
@@ -14,10 +13,15 @@ namespace PriestsAndDevils
     // It represents the state of the game.
     public class State
     {
+        // 指明左岸的牧师数量。
         public int leftPriests;
+        // 指明左岸的魔鬼数量。
         public int leftDevils;
+        // 指明右岸的牧师数量。
         public int rightPriests;
+        // 指明右岸的魔鬼数量。
         public int rightDevils;
+        // 指明船的位置：true 表示在左岸；false 表示在右岸。
         public bool location;
 
         public State(int leftPriests, int leftDevils, int rightPriests, int rightDevils, bool location)
