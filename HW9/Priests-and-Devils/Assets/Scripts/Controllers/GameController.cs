@@ -12,6 +12,7 @@ namespace PriestsAndDevils
         public BoatController boat;
         public List<CharacterController> characters = new List<CharacterController>(6);
         private GameGUI gui;
+        private AI ai;
 
         void Awake()
         {
@@ -27,8 +28,12 @@ namespace PriestsAndDevils
             // 裁判类通知场景控制器游戏胜负。
             game.onChange += delegate
             {
+                // Update GUI.
                 gui.result = game.result;
             };
+            // 初始化 AI 。
+            ai = new AI();
+            gui.hint = AI.startState;
         }
 
         // Load the resources.
@@ -92,6 +97,21 @@ namespace PriestsAndDevils
             // Update the view.
             actionManager.MoveBoat(boat);
             game.CheckWinner();
+            // Update the AI.
+            UpdateAIState();
+        }
+
+        // Show the hint.
+        public void ShowHint()
+        {
+            gui.hint = ai.Hint();
+        }
+
+        // Update the AI State.
+        private void UpdateAIState()
+        {
+            var state = game.GetState();
+            ai.Update(state.leftPriests, state.leftDevils, state.rightPriests, state.rightDevils, state.location);
         }
 
         // It is called when player clicks a character.
@@ -129,8 +149,11 @@ namespace PriestsAndDevils
         // It is called when player resets the game.
         public void Reset()
         {
+            // Reset the AI.
+            ai.Reset();
             // Reset the GUI.
             gui.result = Result.NOT_FINISHED;
+            gui.hint = AI.startState;
             // Reset the boat.
             boat.Reset();
             // Reset the Coasts.

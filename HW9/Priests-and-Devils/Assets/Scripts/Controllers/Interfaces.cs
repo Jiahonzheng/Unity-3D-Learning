@@ -9,6 +9,7 @@ namespace PriestsAndDevils
     {
         void ClickBoat();
         void ClickCharacter(CharacterController c);
+        void ShowHint();
         void Reset();
     }
 }

@@ -11,6 +11,25 @@ namespace PriestsAndDevils
         LOSER,
     }
 
+    // It represents the state of the game.
+    public class State
+    {
+        public int leftPriests;
+        public int leftDevils;
+        public int rightPriests;
+        public int rightDevils;
+        public bool location;
+
+        public State(int leftPriests, int leftDevils, int rightPriests, int rightDevils, bool location)
+        {
+            this.leftPriests = leftPriests;
+            this.leftDevils = leftDevils;
+            this.rightPriests = rightPriests;
+            this.rightDevils = rightDevils;
+            this.location = location;
+        }
+    }
+
     public class Game
     {
         // 表示游戏结果。
@@ -18,6 +37,7 @@ namespace PriestsAndDevils
         private Boat boat;
         private Coast leftCoast;
         private Coast rightCoast;
+        private State state;
         // 用于通知场景控制器游戏的胜负。
         public event EventHandler onChange;
         // 根据传入的控制器生成裁判类。
@@ -26,6 +46,13 @@ namespace PriestsAndDevils
             this.boat = boat;
             this.leftCoast = leftCoast;
             this.rightCoast = rightCoast;
+            this.state = new State(0, 0, 3, 3, false);
+        }
+
+        // It returns the current state.
+        public State GetState()
+        {
+            return state;
         }
 
         // It determines whether the player wins the game.
@@ -59,6 +86,12 @@ namespace PriestsAndDevils
             {
                 result = Result.LOSER;
             }
+            // Update the state.
+            state.leftPriests = leftPriests;
+            state.leftDevils = leftDevils;
+            state.rightPriests = rightPriests;
+            state.rightDevils = rightDevils;
+            state.location = boat.location == Location.Left;
             // 通知场景控制器。
             onChange?.Invoke(this, EventArgs.Empty);
         }
