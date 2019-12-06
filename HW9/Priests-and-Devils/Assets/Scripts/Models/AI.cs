@@ -36,23 +36,29 @@ namespace PriestsAndDevils
             Queue<AIState> found = new Queue<AIState>();
             Queue<AIState> visited = new Queue<AIState>();
             AIState temp = new AIState(currentState.leftPriests, currentState.leftDevils, currentState.rightPriests, currentState.rightDevils, currentState.location, null);
+            // 当前状态进入队列。
             found.Enqueue(temp);
 
             while (found.Count > 0)
             {
+                // 队头出队。
                 temp = found.Peek();
 
+                // 当状态为结束状态时，回溯至开始状态，并返回；否则计算下一个合法状态，并压入队列。
                 if (temp == endState)
                 {
                     while (temp != null && temp.parent != currentState)
                     {
                         temp = temp.parent;
                     }
-                    return temp;
+                    // 避免返回空对象。
+                    return temp == null ? endState : temp;
                 }
 
                 found.Dequeue();
                 visited.Enqueue(temp);
+
+                // 计算下一个合法状态，并压入队列。
 
                 // 当船在左岸时。
                 if (temp.location)
@@ -199,6 +205,7 @@ namespace PriestsAndDevils
                     }
                 }
             }
+            // 避免返回空对象。
             return endState;
         }
     }
@@ -215,6 +222,7 @@ namespace PriestsAndDevils
         public int rightDevils;
         // 指明船的位置：true 表示在左岸；false 表示在右岸。
         public bool location;
+        // 指明父状态。
         public AIState parent;
 
         // 默认构造函数。
@@ -260,7 +268,7 @@ namespace PriestsAndDevils
         // 重写 Equals 函数。
         public override bool Equals(object obj)
         {
-            // 判断 obj 是否为空类型。
+            // 判断 obj 是否为空。
             if (obj == null)
             {
                 return false;
@@ -270,7 +278,7 @@ namespace PriestsAndDevils
             {
                 return false;
             }
-            // 判断成员是否相等。
+            // 判断成员是否相同。
             AIState temp = (AIState)obj;
             return leftPriests.Equals(temp.leftPriests) &&
                 leftDevils.Equals(temp.leftDevils) &&

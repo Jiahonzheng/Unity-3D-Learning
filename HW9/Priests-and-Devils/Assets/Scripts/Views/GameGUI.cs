@@ -40,9 +40,9 @@ namespace PriestsAndDevils
             GUI.Label(new Rect(Screen.width / 2 - 50, Screen.height / 2 - 300, 100, 50), title, textStyle);
             GUI.Label(new Rect(Screen.width / 2 - 50, Screen.height / 2 - 250, 100, 50), author, textStyle);
             // Show the hints.
-            var tmp = hint == null ? AI.endState : hint;
-            var hintStr = "Hint:\nLeft:\tPriests:\t" + tmp.leftPriests + "\tDevils:\t" + tmp.leftDevils + "\nRight:\tPriests:\t" + tmp.rightPriests + "\tDevils:\t" + tmp.rightDevils;
+            var hintStr = "Hint:\nLeft:\tPriests:\t" + hint.leftPriests + "\tDevils:\t" + hint.leftDevils + "\nRight:\tPriests:\t" + hint.rightPriests + "\tDevils:\t" + hint.rightDevils;
             GUI.Label(new Rect(Screen.width / 2 - 450, Screen.height / 2 - 220, 100, 50), hintStr, hintStyle);
+            // Show the Hint button.
             if (GUI.Button(new Rect(Screen.width / 2 - 450, Screen.height / 2 - 280, 100, 50), "Hint", buttonStyle))
             {
                 action.ShowHint();
