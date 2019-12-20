@@ -1,4 +1,4 @@
-# AR 技术的简单尝试
+# AR 虚拟按钮小游戏
 
 项目地址：[github.com/Jiahonzheng/Unity-3D-Learning](https://github.com/Jiahonzheng/Unity-3D-Learning/tree/HW10/HW10)
 
@@ -12,7 +12,7 @@
 
 + Windows 10 1903
 + Unity 2019.2.17.f1
-+ [Vuforia Engine 8.6]()
++ [Vuforia Engine 8.6](https://developer.vuforia.com/downloads/sdk)
 
 ### 设置 Unity
 
@@ -28,7 +28,7 @@ File -> Build Settings -> Player Settings -> Player -> Vuforia Argumented Realit
 
 ### SDK 下载与安装
 
-随后，我们需要在[官网](https://developer.vuforia.com/downloads/sdk) 下载 SDK 文件，该文件格式为 Unity Package 。
+随后，我们需要在 [官网](https://developer.vuforia.com/downloads/sdk) 下载 SDK 文件，该文件格式为 Unity Package 。
 
 ![](https://jiahonzheng-blog.oss-cn-shenzhen.aliyuncs.com/AR%E6%8A%80%E6%9C%AF%E7%9A%84%E7%AE%80%E5%8D%95%E5%B0%9D%E8%AF%95_2.png)
 
